@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,13 +32,20 @@
           placeholder="Search products..."
           class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
       </form>
+      <form method="POST" action="#">
+        @csrf
+        <button type="submit"
+          class="bg-red-600 hover:bg-red-700 transition text-white px-4 py-2 rounded-lg font-medium">
+          Logout
+        </button>
+      </form>
     </nav>
   </header>
-@if(session('error'))
-    <div class="bg-red-100 text-red-700 p-3 rounded">
-        {{ session('error') }}
-    </div>
-@endif
+  @if(session('error'))
+  <div class="bg-red-100 text-red-700 p-3 rounded">
+    {{ session('error') }}
+  </div>
+  @endif
 
   <!-- Main Content -->
   <main class="flex-1 max-w-7xl mx-auto w-full p-6 flex gap-6">
@@ -70,7 +76,7 @@
       </form>
 
     </aside>
-    
+
     <!-- Product Grid -->
     <section class="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @foreach ($products as $product)
