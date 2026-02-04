@@ -33,7 +33,6 @@ public function SheckloginData(array $credentials)
         session()->regenerate();
 
         $user = Auth::user();
-
         if ($user->role === 'admin') {
             return redirect()->intended('Dashboard')
                 ->with('success', 'Welcome admin!');

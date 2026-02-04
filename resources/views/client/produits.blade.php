@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Tailwind CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -22,6 +25,9 @@
     <nav class="flex items-center gap-4">
       <a href="{{ route('products') }}" class="hover:text-indigo-300 transition">
         Home
+      </a>
+      <a href="{{route('ShowFavorites')}}" class="hover:text-indigo-300 transition">
+        Favorites
       </a>
       <form action="{{route('Search')}}" method="GET">
 
@@ -41,9 +47,17 @@
       </form>
     </nav>
   </header>
+  @if(session('success'))
+  <div class="bg-green-100 text-green-700 p-3 rounded">
+    {{ session('success') }}
+    <span class="ml-2 cursor-pointer p-1" onclick="closeAlert(this)">X</span>
+  </div>
+  @endif
+
   @if(session('error'))
   <div class="bg-red-100 text-red-700 p-3 rounded">
     {{ session('error') }}
+    <span class="ml-2 cursor-pointer p-1" onclick="closeAlert(this)">X</span>
   </div>
   @endif
 
@@ -75,6 +89,7 @@
         </ul>
       </form>
 
+
     </aside>
 
     <!-- Product Grid -->
@@ -94,17 +109,47 @@
           {{ $product->category }}
         </p>
 
-        <a
-          href="{{ route('product-details', $product->id) }}"
-          class="mt-auto text-center bg-indigo-600 hover:bg-indigo-700 transition text-white py-2 rounded-lg font-medium">
-          View Details
-        </a>
+        <div class="mt-auto flex items-center justify-between">
+          <a
+            href="{{ route('product-details', $product->id) }}"
+            class="bg-indigo-600 hover:bg-indigo-700 transition text-white py-2 px-4 rounded-lg font-medium">
+            View Details
+          </a>
+          <form action="{{route('AddToFavorite')}}" method="POST">
+            @csrf
+
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+            <button
+              onclick="toggleFavorite(event,e)"
+              type="submit"
+              class="text-gray-400 hover:text-yellow-400 transition text-xl"
+              title="Add to favorites">
+              <i class="fa-regular fa-bookmark"></i>
+            </button>
+          </form>
+        </div>
+
+
       </div>
       @endforeach
     </section>
 
   </main>
+  <script>
+    function toggleFavorite(event, el) {
+      event.preventDefault();
 
+      const icon = el.querySelector('i');
+
+      icon.classList.toggle('fa-regular');
+      icon.classList.toggle('fa-solid');
+      icon.classList.toggle('text-yellow-400');
+    }
+    function closeAlert(element) {
+      element.parentElement.style.display = 'none';
+    }
+  </script>
   <!-- Footer -->
   <footer class="bg-gray-900 border-t border-gray-800 text-gray-500 text-center py-4">
     &copy; 2026 GreenTech Solutions
