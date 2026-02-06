@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
-use App\Http\Services\AuthService;
+use App\Services\AuthService;
 
 class AuthController extends Controller
 {
@@ -25,16 +26,28 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
-        return (new AuthService())->register($validatedData);
+        if ($validatedData) {
+            (new AuthService())->register($validatedData);
+            return redirect()->route('products')
+                ->with('success', 'Registration successful!');
+        }
     }
-    public function SheckloginData(Request $request)
+    public function CheckloginData(Request $request)
     {
         $credentials = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-        return (new AuthService())->SheckloginData($credentials);
+        (new AuthService())->CheckloginData($credentials);
+        return redirect()->route('products')
+            ->with('success', 'Registration successful!');
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return redirect()->route('Login')->with('success', 'Logged out successfully!');
     }
 }

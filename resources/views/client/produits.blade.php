@@ -38,7 +38,7 @@
           placeholder="Search products..."
           class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
       </form>
-      <form method="POST" action="#">
+      <form method="POST" action="{{ route('Logout') }}">
         @csrf
         <button type="submit"
           class="bg-red-600 hover:bg-red-700 transition text-white px-4 py-2 rounded-lg font-medium">
@@ -47,22 +47,21 @@
       </form>
     </nav>
   </header>
-  @if(session('success'))
-  <div class="bg-green-100 text-green-700 p-3 rounded">
+  @if (session('success'))
+  <div class="alert alert-success">
     {{ session('success') }}
-    <span class="ml-2 cursor-pointer p-1" onclick="closeAlert(this)">X</span>
   </div>
   @endif
 
-  @if(session('error'))
-  <div class="bg-red-100 text-red-700 p-3 rounded">
-    {{ session('error') }}
+  @if ($errors->has('error'))
+  <div class="alert alert-danger bg-red-100 text-red-700 p-3 rounded">
+    {{ $errors->first('error') }}
     <span class="ml-2 cursor-pointer p-1" onclick="closeAlert(this)">X</span>
   </div>
   @endif
 
   <!-- Main Content -->
-  <main class="flex-1 max-w-7xl mx-auto w-full p-6 flex gap-6">
+  <main class="flex-1 m-auto max-w-7xl w-full p-6 flex gap-6">
 
     <!-- Sidebar -->
     <aside class="w-64 bg-gray-900 border border-gray-800 rounded-xl p-5">
@@ -108,6 +107,9 @@
         <p class="text-gray-400 text-sm mb-4">
           {{ $product->category }}
         </p>
+        <p class="text-gray-500">
+          {{ Str::limit($product->description, 100) }}
+        </p>
 
         <div class="mt-auto flex items-center justify-between">
           <a
@@ -146,6 +148,7 @@
       icon.classList.toggle('fa-solid');
       icon.classList.toggle('text-yellow-400');
     }
+
     function closeAlert(element) {
       element.parentElement.style.display = 'none';
     }

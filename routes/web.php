@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProduitController;
-
+use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Handler\Proxy;
 use app\Http\Kernel;
 use App\Http\Controllers\AuthController;
@@ -35,15 +35,22 @@ Route::post('/Edit', [ProduitController::class, 'EditProduct'])->name('Edit');
 
 
 Route::get('/', [AuthController::class, 'Login'])->name('Login');
-Route::post('/login', [AuthController::class, 'SheckloginData'])->name('SheckloginData');
+Route::post('/login', [AuthController::class, 'CheckloginData'])->name('SheckloginData');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('Logout');
 //services routes
-Route::get('/AuthService', [App\Http\Services\AuthService::class, 'register'])->name('AuthService');
+// Route::get('/AuthService', [AuthController::class, 'showAuthService'])->name('AuthService');
 //favorites
-Route::get('/favorites',[FavoriteController::class,'ShowFavorites'])->name('ShowFavorites');
+Route::get('/favorites', [FavoriteController::class, 'ShowFavorites'])->name('ShowFavorites');
 Route::post('/favorites/add', [FavoriteController::class, 'AddToFavorite'])
     ->name('AddToFavorite')
     ->middleware('auth');
+Route::delete('/delete/favorite/{id}', [FavoriteController::class, 'RemovePFromFavoris'])
+    ->name('delete-product-from-favorite');
+
+
+
+    //test
