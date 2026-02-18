@@ -5,16 +5,18 @@ namespace App\Services;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Role;
 
 class AuthService
 {
     public function register(array $data)
     {
+        $role = Role::firstOrCreate(['name' => 'client']);
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => 'client',
+            'role_id' => $role->id
         ]);
 
         if ($user) {
@@ -32,12 +34,10 @@ class AuthService
             session()->regenerate();
 
             $user = Auth::user();
-            if ($user->role === 'admin') {
-                return redirect()->intended('Dashboard')
-                    ->with('success', 'Welcome admin!');
-            } else {
-                return redirect()->intended('products')
-                    ->with('success', 'Login successful!');
+            if ($user->role->name === 'admin') {
+                return 'admin';
+            } else if ($user->role->name === 'client') {
+                return 'client';
             }
         }
 

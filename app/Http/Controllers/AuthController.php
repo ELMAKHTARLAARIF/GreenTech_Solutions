@@ -38,9 +38,16 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-        (new AuthService())->CheckloginData($credentials);
-        return redirect()->route('products')
-            ->with('success', 'Registration successful!');
+        $person = (new AuthService())->CheckloginData($credentials);
+        if ($person === 'admin') {
+            return redirect()->route('Dashboard');
+        } else if ($person === 'client') {
+            return redirect()->route('products');
+        } else {
+            return back()->withErrors([
+                'login_error' => 'The provided credentials do not match our records.'
+            ]);
+        }
     }
     public function logout(Request $request)
     {

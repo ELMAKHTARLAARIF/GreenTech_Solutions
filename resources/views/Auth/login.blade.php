@@ -12,7 +12,7 @@
         @csrf
 
         <h1 class="text-3xl font-bold text-center">Login</h1>
-
+        
         <div>
             <label class="block text-sm mb-1">Email</label>
             <input type="email" name="email" required

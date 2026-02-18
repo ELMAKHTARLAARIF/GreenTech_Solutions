@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produit;
-
 class ProduitController extends Controller
 {
     public function dashboard()
     {
+
         $products = Produit::all();
         return view('Admin/Dashboard', compact('products'));
     }

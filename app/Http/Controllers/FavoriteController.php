@@ -30,7 +30,6 @@ class FavoriteController extends Controller
         $exists = Favorite::where('user_id', Auth::id())
             ->where('produit_id', $data['product_id'])
             ->exists();
-
         if (! $exists) {
             $check = (new FavoriteService())
                 ->AddToFavoriteService($data['product_id']);

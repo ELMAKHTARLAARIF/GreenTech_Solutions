@@ -48,8 +48,9 @@
     </nav>
   </header>
   @if (session('success'))
-  <div class="alert alert-success">
+  <div class="alert alert-success bg-green-100 text-green-700 p-3 rounded">
     {{ session('success') }}
+    <span class="ml-2 cursor-pointer p-1" onclick="closeAlert(this)">X</span>
   </div>
   @endif
 
@@ -59,7 +60,6 @@
     <span class="ml-2 cursor-pointer p-1" onclick="closeAlert(this)">X</span>
   </div>
   @endif
-
   <!-- Main Content -->
   <main class="flex-1 m-auto max-w-7xl w-full p-6 flex gap-6">
 
@@ -127,7 +127,8 @@
               type="submit"
               class="text-gray-400 hover:text-yellow-400 transition text-xl"
               title="Add to favorites">
-              <i class="fa-regular fa-bookmark"></i>
+              <i class="fa-regular fa-bookmark">
+              </i>
             </button>
           </form>
         </div>
